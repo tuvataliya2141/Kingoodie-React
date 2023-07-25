@@ -7,7 +7,6 @@ import { useAppContext } from "../context/index";
 
 function Header({ Crat }) {
   const {
-    UserName,
     AllCategory,
     Logo,
     GetAllSearch,
@@ -46,15 +45,7 @@ function Header({ Crat }) {
   useEffect(() => {
     GetAllCart();
   }, []);
-  const SignOut = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("type");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("tempid");
-    localStorage.removeItem("category");
-    localStorage.removeItem("brand");
-  };
+  
   const productsData = searchData.products;
 
   const close = (key) => {
@@ -214,53 +205,6 @@ function Header({ Crat }) {
                 <div className="header-action-right">
                   <div className="header-action-2">
                     <div className="header-action-icon-2">
-                      {/*<Link to="/wishlist">
-                        <img className="svgInject" alt="/" src="assets/imgs/theme/icons/Vector.svg" />
-                        {
-                          Wishlist == null ? " " : <span className="pro-count blue">{Wishlist}</span>
-                        } 
-                      </Link>*/}
-
-                      {/* {
-                        user_id == null ? <Link to="/login"><img className="svgInject" alt="/" src="assets/imgs/theme/icons/Vector.svg" /></Link> : <Link to="/wishlist"><img className="svgInject" alt="/" src="assets/imgs/theme/icons/Vector.svg" /></Link>
-                      } */}
-
-                      {user_id == null ? (
-                        <Link to="/login">
-                          <svg
-                            className="svg_icon"
-                            width="24"
-                            height="23"
-                            viewBox="0 0 24 23"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M17.5 0.916992C16.3739 0.934507 15.2724 1.24885 14.3067 1.82826C13.341 2.40768 12.5453 3.23166 12 4.21699C11.4546 3.23166 10.6589 2.40768 9.6932 1.82826C8.7275 1.24885 7.62601 0.934507 6.49996 0.916992C4.7049 0.994983 3.01366 1.78025 1.79574 3.10122C0.577818 4.4222 -0.0677922 6.17152 -4.17093e-05 7.96699C-4.17093e-05 12.514 4.78596 17.48 8.79996 20.847C9.69618 21.6001 10.8293 22.013 12 22.013C13.1706 22.013 14.3037 21.6001 15.2 20.847C19.214 17.48 24 12.514 24 7.96699C24.0677 6.17152 23.4221 4.4222 22.2042 3.10122C20.9863 1.78025 19.295 0.994983 17.5 0.916992Z"
-                              fill="#A5A5A5"
-                            />
-                          </svg>
-                        </Link>
-                      ) : (
-                        <Link to="/wishlist">
-                          <svg
-                            className="svg_icon"
-                            width="24"
-                            height="23"
-                            viewBox="0 0 24 23"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M17.5 0.916992C16.3739 0.934507 15.2724 1.24885 14.3067 1.82826C13.341 2.40768 12.5453 3.23166 12 4.21699C11.4546 3.23166 10.6589 2.40768 9.6932 1.82826C8.7275 1.24885 7.62601 0.934507 6.49996 0.916992C4.7049 0.994983 3.01366 1.78025 1.79574 3.10122C0.577818 4.4222 -0.0677922 6.17152 -4.17093e-05 7.96699C-4.17093e-05 12.514 4.78596 17.48 8.79996 20.847C9.69618 21.6001 10.8293 22.013 12 22.013C13.1706 22.013 14.3037 21.6001 15.2 20.847C19.214 17.48 24 12.514 24 7.96699C24.0677 6.17152 23.4221 4.4222 22.2042 3.10122C20.9863 1.78025 19.295 0.994983 17.5 0.916992Z"
-                              fill="#A5A5A5"
-                            />
-                          </svg>
-                        </Link>
-                      )}
-                    </div>
-
-                    <div className="header-action-icon-2">
                       <Link to="/Cart">
                         {/* <img className="svgInject"  alt="/" src="assets/imgs/theme/icons/shopping-cart.svg" /> */}
 
@@ -299,62 +243,6 @@ function Header({ Crat }) {
                          // Crat == null ? <span className="pro-count blue">{GetCart.length}</span> : <span className="pro-count blue">{Crat}</span>
                         }  */}
                       </Link>
-                    </div>
-                    <div className="header-action-icon-2">
-                      <Link to="/">
-                        {/* <img className="svgInject" alt="/" src="assets/imgs/theme/icons/icon-compare.svg" /> */}
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            className="svg_icon1"
-                            d="M12 12C15.3137 12 18 9.31371 18 6C18 2.68629 15.3137 0 12 0C8.68629 0 6 2.68629 6 6C6 9.31371 8.68629 12 12 12Z"
-                            fill="#A5A5A5"
-                          />
-                          <path
-                            className="svg_icon1"
-                            d="M12 14C7.03172 14.0055 3.00553 18.0317 3 23C3 23.5523 3.4477 24 3.99998 24H20C20.5522 24 21 23.5523 21 23C20.9945 18.0317 16.9683 14.0055 12 14Z"
-                            fill="#A5A5A5"
-                          />
-                        </svg>
-                      </Link>
-                      <div className="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
-                        {UserName ? (
-                          <ul>
-                            <li>
-                              <Link to="/Dashboard">
-                                <i className="fi fi-rs-user mr-10" />
-                                My Account
-                              </Link>
-                            </li>
-                            <li onClick={SignOut}>
-                              <a href="/">
-                                <i className="fi fi-rs-sign-in mr-10" />
-                                Sign out
-                              </a>
-                            </li>
-                          </ul>
-                        ) : (
-                          <ul>
-                            <li>
-                              <Link to="/Register">
-                                <i className="fi fi-rs-user mr-10" />
-                                Register
-                              </Link>
-                            </li>
-                            <li>
-                              <Link to="/Login">
-                                <i className="fi-rs-sign-out mr-10" />
-                                Login
-                              </Link>
-                            </li>
-                          </ul>
-                        )}
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -459,10 +347,7 @@ function Header({ Crat }) {
                         {/* <li>
                           <Link to="/">Pages <i className="fi-rs-angle-down" /></Link>
                           <ul className="sub-menu">
-                            <li><Link to="/Register">Register</Link></li>
-                            <li><Link to="/Login">Login</Link></li>
                             <li><Link to="/ShopProduct">Shop Product</Link></li>
-                            <li><Link to="/wishlist">wishlist</Link></li>
                             <li><Link to="/Cart">Cart</Link></li>
                             <li><Link to="/shop/girls-tops">Product</Link></li>
                             <li><Link to="/">Home</Link></li>
@@ -488,41 +373,6 @@ function Header({ Crat }) {
                 </div>
                 <div className="header-action-right d-block d-lg-none">
                   <div className="header-action-2">
-                    <div className="header-action-icon-2">
-                      {user_id == null ? (
-                        <Link to="/login">
-                          <svg
-                            className="svg_icon"
-                            width="24"
-                            height="23"
-                            viewBox="0 0 24 23"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M17.5 0.916992C16.3739 0.934507 15.2724 1.24885 14.3067 1.82826C13.341 2.40768 12.5453 3.23166 12 4.21699C11.4546 3.23166 10.6589 2.40768 9.6932 1.82826C8.7275 1.24885 7.62601 0.934507 6.49996 0.916992C4.7049 0.994983 3.01366 1.78025 1.79574 3.10122C0.577818 4.4222 -0.0677922 6.17152 -4.17093e-05 7.96699C-4.17093e-05 12.514 4.78596 17.48 8.79996 20.847C9.69618 21.6001 10.8293 22.013 12 22.013C13.1706 22.013 14.3037 21.6001 15.2 20.847C19.214 17.48 24 12.514 24 7.96699C24.0677 6.17152 23.4221 4.4222 22.2042 3.10122C20.9863 1.78025 19.295 0.994983 17.5 0.916992Z"
-                              fill="#A5A5A5"
-                            />
-                          </svg>
-                        </Link>
-                      ) : (
-                        <Link to="/wishlist">
-                          <svg
-                            className="svg_icon"
-                            width="24"
-                            height="23"
-                            viewBox="0 0 24 23"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M17.5 0.916992C16.3739 0.934507 15.2724 1.24885 14.3067 1.82826C13.341 2.40768 12.5453 3.23166 12 4.21699C11.4546 3.23166 10.6589 2.40768 9.6932 1.82826C8.7275 1.24885 7.62601 0.934507 6.49996 0.916992C4.7049 0.994983 3.01366 1.78025 1.79574 3.10122C0.577818 4.4222 -0.0677922 6.17152 -4.17093e-05 7.96699C-4.17093e-05 12.514 4.78596 17.48 8.79996 20.847C9.69618 21.6001 10.8293 22.013 12 22.013C13.1706 22.013 14.3037 21.6001 15.2 20.847C19.214 17.48 24 12.514 24 7.96699C24.0677 6.17152 23.4221 4.4222 22.2042 3.10122C20.9863 1.78025 19.295 0.994983 17.5 0.916992Z"
-                              fill="#A5A5A5"
-                            />
-                          </svg>
-                        </Link>
-                      )}
-                    </div>
                     <div className="header-action-icon-2">
                       <Link to="/Cart">
                         <svg
@@ -643,39 +493,6 @@ function Header({ Crat }) {
               </nav>
             </div>
             <div className="mobile-header-info-wrap">
-              {UserName ? (
-                <>
-                  <div className="single-mobile-header-info">
-                    <Link to="/Dashboard">
-                      <i className="fi fi-rs-user mr-10" />
-                      My Account
-                    </Link>
-                  </div>
-                  <div className="single-mobile-header-info">
-                    <a href="/">
-                      <i className="fi fi-rs-sign-in mr-10" />
-                      Sign out
-                    </a>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="single-mobile-header-info">
-                    <Link to="/Register">
-                      <i className="fi-rs-user" />
-                      Register
-                    </Link>
-                  </div>
-                  <div className="single-mobile-header-info">
-                    <Link to="/Login">
-                      {" "}
-                      <i className="fi-rs-sign-out mr-10" />
-                      Login
-                    </Link>
-                  </div>
-                </>
-              )}
-
               <div className="single-mobile-header-info">
                 <a href="#">
                   <i className="fi-rs-headphones" />

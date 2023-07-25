@@ -54,7 +54,6 @@ function OrderDetail() {
             const ContactData = `${urlConstant.Contact.PostContact}`;
             await axios.post(ContactData, data, {
                 headers: { 
-                    "Authorization": `Bearer ${localStorage.getItem('access_token')}`,
                     "Content-Type": "multipart/form-data"
                 }
               }).then(() => {
@@ -78,9 +77,7 @@ function OrderDetail() {
             setIsLoading(true)
             const Data = { id:`${id}` }
             const GetOrderDetail = `${urlConstant.Dashboard.OrderDetail}/${id}`;
-            common.httpGet(GetOrderDetail, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            common.httpGet(GetOrderDetail, Data).then((res) => {
                 SetOrderDetails(res.data.data);
                 SetOrder_id(res.data.data.code);
                 SetOrderMainId(res.data.data.id);
@@ -108,9 +105,7 @@ function OrderDetail() {
         try {
           const Data = { id:`${id}` }
           const GetOrderDetail = `${urlConstant.Dashboard.OrderSummary}/${id}`;
-          common.httpGet(GetOrderDetail, Data, {
-            headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-          }).then((res) => {
+          common.httpGet(GetOrderDetail, Data).then((res) => {
             SetProductDetails(res.data.data);
           })
     

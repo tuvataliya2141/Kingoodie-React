@@ -106,9 +106,9 @@ function Footer() {
                             <div className="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".2s">
                                 <h4 className="widget-title">Account</h4>
                                 <ul className="footer-list mb-sm-5 mb-md-0">
-                                    <li><Link to={"/Login"}>Sign In</Link></li>
+                                    <li><Link to={"/OrderTrack"}>Order Tracking</Link></li>
+                                    <li><Link to={"/SupportTicket"}>Support Ticket</Link></li>
                                     <li><Link to={"/Cart"}>View Cart</Link></li>
-                                    <li><Link to={"/wishlist"}>My Wishlist</Link></li>
                                 </ul>
                             </div>
                             <div className="footer-link-widget col wow animate__animated animate__fadeInUp" data-wow-delay=".4s">

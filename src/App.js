@@ -1,5 +1,5 @@
 import React from "react";
-import router from "./router";
+import routerList from "./router";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Whatsapp from './assets/imgs/theme/whatsapp.png';
 import Header from "./component/Header";
@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <Header />
         <Routes>
-          {router.map((item, i) => {
+          {routerList.map((item, i) => {
             return (<Route key={i} element={<item.element />} path={item.path} exact={item.exact} />);
           })}
         </Routes>

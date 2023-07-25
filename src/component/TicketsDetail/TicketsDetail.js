@@ -35,9 +35,7 @@ function TicketsDetail() {
         try {
             const data = { TicketId, details, user_id };
             const TicketReplies = `${urlConstant.User.TicketReply}`;
-            await axios.post(TicketReplies, data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-              }).then(() => {
+            await axios.post(TicketReplies, data).then(() => {
                 ToasterSuccess("Success...!!");
                 Setdetails('');
                 convartions();
@@ -56,9 +54,7 @@ function TicketsDetail() {
         try {
           const Data = { id:`${id}` }
           const supportUrl = `${urlConstant.User.supportTicketUrl}/${id}`;
-          common.httpGet(supportUrl, Data, {
-            headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-          }).then((res) => {
+          common.httpGet(supportUrl, Data).then((res) => {
             SetTicketId(res.data.data.id);
             SetTicketCode(res.data.data.code);
             SetTicketDetails(res.data.data);

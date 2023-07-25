@@ -11,7 +11,7 @@ import RangeSlider from "./RangeSlider";
 function ShopProductCategory() {
   const name = useParams();
 
-  const { user_id, wishlistPost, Loding } = useAppContext();
+  const { user_id,  Loding } = useAppContext();
 
   const [List, setList] = useState([]);
   const [toggleMobile, settoggleMobile] = useState(false);
@@ -84,11 +84,7 @@ function ShopProductCategory() {
     const GetAllProducts = `${urlConstant.Products.GetCategoryWiseProducts}`;
     const Data = { slug: name.name };
     axios
-      .post(GetAllProducts, Data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      })
+      .post(GetAllProducts, Data)
       .then(function (res) {
         setIsLoading(false);
         setList(res.data.data);
@@ -579,27 +575,7 @@ function ShopProductCategory() {
                                 />
                               </Link>
                             </div>
-                            <div className="product-action-1">
-                              {user_id == null ? (
-                                <Link to="/login">
-                                  <a className="action-btn">
-                                    <i className="fi-rs-heart" />
-                                  </a>
-                                </Link>
-                              ) : (
-                                <a
-                                  className="action-btn"
-                                  onClick={() => {
-                                    wishlistPost(item.id);
-                                  }}
-                                >
-                                  <i className="fi-rs-heart" />
-                                </a>
-                              )}
-
-                              {/* <a  className="action-btn" onClick={() => { wishlistPost(item.id) }}><i className="fi-rs-heart" /></a> */}
-                              {/* <a aria-label="Compare" className="action-btn" href="#"><i className="fi-rs-shuffle" /></a> */}
-                            </div>
+                            
                             <div className="product-badges product-badges-position product-badges-mrg flex-column">
                               {item.on_sale == 0 ? null : (
                                 <span

@@ -315,7 +315,7 @@ function Cart() {
 
                                 <div>
                                     {
-                                        user_id == null ? <Link to={'/Login'} className="btn mb-20 w-100">Proceed To CheckOut<i className="fi-rs-sign-out ml-15" /></Link> :
+                                       
                                             List.length == 0 ? <Link onClick={Notfound} className="btn mb-20 w-100">Proceed To CheckOut<i className="fi-rs-sign-out ml-15" /></Link> :
                                                 <Link to={'/Checkout'} className="btn mb-20 w-100">Proceed To CheckOut<i className="fi-rs-sign-out ml-15" /></Link>
                                     }
