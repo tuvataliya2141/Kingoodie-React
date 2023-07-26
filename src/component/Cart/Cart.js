@@ -32,7 +32,7 @@ function Cart() {
     function GetAllCart() {
         setIsLoading(true)
         const tempid = localStorage.getItem('tempid');
-        const cartid = user_id ? `?userId=${user_id}` : `?tempuserid=${tempid}`;
+        const cartid = `?tempuserid=${tempid}`;
 
         const GetAllCart = `${urlConstant.Cart.GetCart}${cartid}`;
         common.httpGet(GetAllCart).then(function (res) {

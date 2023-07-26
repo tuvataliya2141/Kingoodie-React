@@ -17,6 +17,7 @@ import Select2 from "react-select2-wrapper";
 function Checkout() {
     let common = new CommonService();
     const { Loding, user_id, Logo, UserEmail ,setTotalCount} = useAppContext();
+    const tempid = localStorage.getItem('tempid');
     const { CreateOrder } = useShippingContext();
 
     const [CouponCode, SetCouponCode] = useState('');
@@ -58,7 +59,6 @@ function Checkout() {
 
     var Sub_Total_price = GetCart.map(item => item.price * item.quantity).reduce((total, value) => total + value, 0);
     var main_Sub_Total_price = Sub_Total_price - (Sub_Total_price * 5 / 100);
-    console.log('main sub check pay:', main_Sub_Total_price); 
 
     const SubmitHandler = async (e) => {
         e.preventDefault();
@@ -139,11 +139,10 @@ function Checkout() {
     const pay = (e) => {
         setPaymentTypes(e.target.alt)
     }
-
     
     function GetAllCart() {
         const tempid = localStorage.getItem('tempid');
-        const cartid = user_id ? `?userId=${user_id}` : `?tempuserid=${tempid}`;
+        const cartid = `?tempuserid=${tempid}`;
         const GetAllCart = `${urlConstant.Cart.GetCart}${cartid}`;
         common.httpGet(GetAllCart).then(function (res) {
             if(res?.data?.data[0]?.cart_items){
@@ -251,7 +250,6 @@ function Checkout() {
         });
     }
 
-    
     function ApplyCoupon(CouponCode) {
         if (!CouponCode) {
             ToasterWarning('Please Enter Coupon Code')
@@ -259,12 +257,10 @@ function Checkout() {
         }
         try {
             setIsLoading(true)
-            const Data = { coupon_code: CouponCode, user_id: parseInt(user_id) }
+            console.log(tempid);
+            const Data = { coupon_code: CouponCode, user_id: parseInt(tempid) }
             const CouponData = `${urlConstant.ApplyCoupon.PostApplyCoupon}`;
-            axios.post(CouponData, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
-                // ToasterSuccess("Success...!!");
+            axios.post(CouponData, Data).then((res) => {
                 ToasterSuccess(res.data.message);
                 SetCouponResult(res.data.discount);
                 localStorage.setItem('discount', res.data.discount);
@@ -279,11 +275,8 @@ function Checkout() {
     function CouponRemove(CouponCode) {
         try {
             setIsLoading(true)
-            const Data = { user_id: parseInt(user_id) }
             const CouponData = `${urlConstant.ApplyCoupon.RemoveCoupon}`;
-            axios.post(CouponData, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            axios.post(CouponData).then((res) => {
                 ToasterSuccess(res.data.message);
                 SetCouponResult(0);
                 localStorage.removeItem('discount');
@@ -425,40 +418,6 @@ function Checkout() {
         )
     }
 
-    function GetaddressList() {
-        const addressData = `${urlConstant.User.UserAddresses}/`+parseInt(user_id);
-        common.httpGet(addressData).then(function (res) {
-                const addList = res.data.data;
-                setAddressList(res.data.data);
-        }).catch(function (error) {
-            // ToasterError("Error");
-        });
-    }
-    
-    const setShippingAddress = async (address_id) => {
-        setIsLoading(true)
-        const GetAddress = `${urlConstant.User.UserUpdateAddresses}/`+address_id;
-        await common.httpGet(GetAddress).then(function (res) {
-            SetName(res.data.data.name);
-            SetEmail(`${UserEmail}`);
-            SetPhoneNumber(res.data.data.phone);
-            SetAddress(res.data.data.address);
-            SetPostCode(res.data.data.postal_code);
-            StatesGet(res.data.data.country_id);
-            CityGet(res.data.data.state_id);
-            setTimeout(() => {
-                SetCountry(res.data.data.country_id);
-                Setstate(res.data.data.state_id);
-                Setcity(res.data.data.city_id);
-                setIsLoading(false);
-            }, 3000);
-
-        }).catch(function (error) {
-            // ToasterWarning(error.message)
-            console.log(error);
-        });
-    }
-
     function GetPinCode(PinCode) {
         const GetPinCode1 = `${urlConstant.ShippingApi.Pincode}`;
         const Data = {
@@ -491,13 +450,11 @@ function Checkout() {
     useEffect(() => {
         GetPaymentTypes();
         CountriesGet();
-        GetaddressList();
         GetAllCart();
         window.scrollTo({
             top: 0,
             behavior: "smooth",
         });
-         // Check to see if this is a redirect back from Checkout
         const query = new URLSearchParams(window.location.search);
 
         if (query.get("success")) {
@@ -511,9 +468,7 @@ function Checkout() {
     return (
         <div>
             {isLoading ? <Loding /> : Checkout}
-            {/* <Header /> */}
             <ToastContainer />
-            {/* <link rel="stylesheet" href="https://unpkg.com/react-select/dist/react-select.css"></link> */}
             <main className="main">
                 <div className="page-header breadcrumb-wrap">
                     <div className="container">
@@ -539,164 +494,123 @@ function Checkout() {
                     <div className="row">
                         <div className="col-lg-7">
                             <div className="row mb-50">
-                                {/* <div className="col-lg-6 mb-sm-15 mb-lg-0 mb-md-3">
-                                    <div className="toggle_info">
-                                        <span><i className="fi-rs-user mr-10" /><span className="text-muted font-lg">Already have an account?</span> <Link to="/Login" className="collapsed font-lg" >Click here to login</Link></span>
-                                    </div>
-                                </div> */}
                                 <div className="col-lg-6 apply-coupon">
                                     <input type="text" placeholder="Enter Coupon Code..." value={CouponCode} onChange={(e) => { SetCouponCode(e.target.value) }} />
                                     <button className="btn btn-md button-size" onClick={() => { ApplyCoupon(CouponCode) }}>Apply Coupon</button>
                                 </div>
                             </div>
                             <div className="row">
-                                <h4 className="mb-30">My Address</h4>
-                                <div className={AddressList.length == 0 ? 'addresses hideAddress' : 'addresses'}>
-                                    {/* <div className="row product-grid-4"> */}
-                                    <div class="grid userAddresses">
-                                        {
-                                            AddressList.map((item, i) => {
-                                                return (
-                                                    <>
-                                                        {<label class="card">
-                                                            <input name="plan" class="radio" type="radio" onClick={() => { GetPinCode(item.postal_code) }} value={item.id} onChange={(e) => { setShippingAddress(e.target.value) }}/>
-                                                            <span class="plan-details">
-                                                                <h2>{item.name}</h2><br/>
-                                                                <span>{item.address}, {item.city_name}, {item.state_name}, {item.country_name} - {item.postal_code}</span><br/>
-                                                                <h3>Mobile: <b>{item.phone}</b></h3>
-                                                            </span>
-                                                        </label>
+                                <form method="post">
+                                    <div className="row">
+                                        <div className="form-group col-lg-6">
+                                            <input type="text" required name="name" placeholder="Full name *" value={Name || ""} onChange={(e) => { SetName(e.target.value) }} />
+                                        </div>
+                                        <div className="form-group col-lg-6">
+                                            <input type="text" name="billing_address" required placeholder="Address*" value={Address || ""} onChange={(e) => { SetAddress(e.target.value) }} />
+                                        </div>
+                                    </div>
+                                    <div className="row shipping_calculator">
+                                        <div className="form-group col-lg-6">
+                                            <div className="custom_select">
+                                                {
+                                                    <Select2 className="form-control select-active" defaultValue={Country} data = {ListCountries} onChange={handleCountryChange}/>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className="form-group col-lg-6">
+                                            <div className="custom_select">
+                                                {
+                                                    <Select2 className="form-control select-active" defaultValue={state} data = {ListStates} onChange={handleStateChange}/>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="form-group col-lg-6">
+                                            <div className="custom_select cityDropdown ">
+                                                {
+                                                    <Select2 className="form-control select-active" defaultValue={city} data = {ListCity} onChange={handleCityChange}/>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className="form-group col-lg-6">
+                                            {PinMessage && <div style={{ fontSize: "14px", color: "red" }}>{PinMessage}</div>}
+                                            <input required type="text" name="zipcode" onBlur={() => { GetPinCode(PostCode) }} placeholder="Postcode / ZIP *" value={PostCode || ""} onChange={(e) => { SetPostCode(e.target.value) }} />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="form-group col-lg-6">
+                                            <input required type="phone" maxLength={10} name="phone" placeholder="Phone *" value={PhoneNumber || ""} onChange={(e) => { SetPhoneNumber(e.target.value.replace(/\D/g, '')) }} />
+                                        </div>
+                                        <div className="form-group col-lg-6">
+                                            <input required type="text" name="email" placeholder="Email address *" value={Email || ""} onChange={(e) => { SetEmail(e.target.value) }} />
+                                        </div>
+                                    </div>
+                                    <div className="form-group mb-30">
+                                        <textarea rows={5} placeholder="Additional information" defaultValue={""} value={AdditionalInfomation || ""} onChange={(e) => { SetAdditionalInfomation(e.target.value) }} />
+                                    </div>
+                                    <div className="ship_detail">
+                                        <div className="form-group">
+                                            <div className="chek-form">
+                                                <div className="custome-checkbox">
+                                                    <input className="form-check-input" type="checkbox" name="checkbox" id="differentaddress" />
+                                                    <label className="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" htmlFor="differentaddress"><span>Ship to a different address?</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="collapseAddress" className="different_address collapse in">
+                                            <div className="row">
+                                                <div className="form-group col-lg-6">
+                                                    <input type="text" required name="name" placeholder="Full name *" value={Name || ""} onChange={(e) => { SetName(e.target.value) }} />
+                                                </div>
+                                                <div className="form-group col-lg-6">
+                                                    <input type="text" name="billing_address" required placeholder="Address*" value={Address || ""} onChange={(e) => { SetAddress(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="row shipping_calculator">
+                                                <div className="form-group col-lg-6">
+                                                    <div className="custom_select">
+                                                        {
+                                                            <Select2 className="form-control select-active" defaultValue="" data = {ListCountries} onChange={handleCountryChange}/>
                                                         }
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                                {PinMessage && <div style={{ fontSize: "14px", color: "red" }}>{PinMessage}</div>}
-                            </div>
-                            <div className="row">
-                                <div className="form-group">
-                                    <div className="chek-form">
-                                        <div className="custome-checkbox">
-                                            <input className="form-check-input" type="checkbox" name="checkbox" id="addaddress" />
-                                            <label className="form-check-label label_info" data-bs-toggle="collapse" data-target="#newAddress" href="#newAddress" aria-controls="newAddress" htmlFor="addaddress"><span>Add New Address</span></label>
+                                                    </div>
+                                                </div>
+                                                <div className="form-group col-lg-6">
+                                                    <div className="custom_select">
+                                                        {
+                                                            <Select2 className="form-control select-active" defaultValue="" data = {ListStates} onChange={handleStateChange}/>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="form-group col-lg-6">
+                                                    {/* <input required type="text" name="city" placeholder="City / Town *" value={city || ""} onChange={(e) => { Setcity(e.target.value) }} /> */}
+                                                    <div className="custom_select cityDropdown">
+                                                        {
+                                                            <Select2 className="form-control select-active" defaultValue="" data = {ListCity} onChange={handleCityChange}/>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div className="form-group col-lg-6">
+                                                    {PinMessage && <div style={{ fontSize: "14px", color: "red" }}>{PinMessage}</div>}
+                                                    <input required type="text" name="zipcode" onBlur={() => { GetPinCode(PostCode) }} placeholder="Postcode / ZIP *" value={PostCode || ""} onChange={(e) => { SetPostCode(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="form-group col-lg-6">
+                                                    <input required type="phone" maxLength={10} name="phone" placeholder="Phone *" value={PhoneNumber || ""} onChange={(e) => { SetPhoneNumber(e.target.value.replace(/\D/g, '')) }} />
+                                                </div>
+                                                <div className="form-group col-lg-6">
+                                                    <input required type="text" name="email" placeholder="Email address *" value={Email || ""} onChange={(e) => { SetEmail(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="form-group mb-30">
+                                                <textarea rows={5} placeholder="Additional information" defaultValue={""} value={AdditionalInfomation || ""} onChange={(e) => { SetAdditionalInfomation(e.target.value) }} />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="newAddress" className="different_address collapse in">
-                                    <form method="post">
-                                        <div className="row">
-                                            <div className="form-group col-lg-6">
-                                                <input type="text" required name="name" placeholder="Full name *" value={Name || ""} onChange={(e) => { SetName(e.target.value) }} />
-                                            </div>
-                                            <div className="form-group col-lg-6">
-                                                <input type="text" name="billing_address" required placeholder="Address*" value={Address || ""} onChange={(e) => { SetAddress(e.target.value) }} />
-                                            </div>
-                                        </div>
-                                        <div className="row shipping_calculator">
-                                            <div className="form-group col-lg-6">
-                                                <div className="custom_select">
-                                                    {
-                                                        <Select2 className="form-control select-active" defaultValue={Country} data = {ListCountries} onChange={handleCountryChange}/>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div className="form-group col-lg-6">
-                                                <div className="custom_select">
-                                                    {
-                                                        <Select2 className="form-control select-active" defaultValue={state} data = {ListStates} onChange={handleStateChange}/>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="form-group col-lg-6">
-                                                <div className="custom_select cityDropdown ">
-                                                    {
-                                                        <Select2 className="form-control select-active" defaultValue={city} data = {ListCity} onChange={handleCityChange}/>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div className="form-group col-lg-6">
-                                                {PinMessage && <div style={{ fontSize: "14px", color: "red" }}>{PinMessage}</div>}
-                                                <input required type="text" name="zipcode" onBlur={() => { GetPinCode(PostCode) }} placeholder="Postcode / ZIP *" value={PostCode || ""} onChange={(e) => { SetPostCode(e.target.value) }} />
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="form-group col-lg-6">
-                                                <input required type="phone" maxLength={10} name="phone" placeholder="Phone *" value={PhoneNumber || ""} onChange={(e) => { SetPhoneNumber(e.target.value.replace(/\D/g, '')) }} />
-                                            </div>
-                                            <div className="form-group col-lg-6">
-                                                <input required type="text" name="email" placeholder="Email address *" value={Email || ""} onChange={(e) => { SetEmail(e.target.value) }} />
-                                            </div>
-                                        </div>
-                                        <div className="form-group mb-30">
-                                            <textarea rows={5} placeholder="Additional information" defaultValue={""} value={AdditionalInfomation || ""} onChange={(e) => { SetAdditionalInfomation(e.target.value) }} />
-                                        </div>
-                                        <div className="ship_detail">
-                                            <div className="form-group">
-                                                <div className="chek-form">
-                                                    <div className="custome-checkbox">
-                                                        <input className="form-check-input" type="checkbox" name="checkbox" id="differentaddress" />
-                                                        <label className="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" htmlFor="differentaddress"><span>Ship to a different address?</span></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id="collapseAddress" className="different_address collapse in">
-                                                <div className="row">
-                                                    <div className="form-group col-lg-6">
-                                                        <input type="text" required name="name" placeholder="Full name *" value={Name || ""} onChange={(e) => { SetName(e.target.value) }} />
-                                                    </div>
-                                                    <div className="form-group col-lg-6">
-                                                        <input type="text" name="billing_address" required placeholder="Address*" value={Address || ""} onChange={(e) => { SetAddress(e.target.value) }} />
-                                                    </div>
-                                                </div>
-                                                <div className="row shipping_calculator">
-                                                    <div className="form-group col-lg-6">
-                                                        <div className="custom_select">
-                                                            {
-                                                                <Select2 className="form-control select-active" defaultValue="" data = {ListCountries} onChange={handleCountryChange}/>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-group col-lg-6">
-                                                        <div className="custom_select">
-                                                            {
-                                                                <Select2 className="form-control select-active" defaultValue="" data = {ListStates} onChange={handleStateChange}/>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="form-group col-lg-6">
-                                                        {/* <input required type="text" name="city" placeholder="City / Town *" value={city || ""} onChange={(e) => { Setcity(e.target.value) }} /> */}
-                                                        <div className="custom_select cityDropdown">
-                                                            {
-                                                                <Select2 className="form-control select-active" defaultValue="" data = {ListCity} onChange={handleCityChange}/>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-group col-lg-6">
-                                                        {PinMessage && <div style={{ fontSize: "14px", color: "red" }}>{PinMessage}</div>}
-                                                        <input required type="text" name="zipcode" onBlur={() => { GetPinCode(PostCode) }} placeholder="Postcode / ZIP *" value={PostCode || ""} onChange={(e) => { SetPostCode(e.target.value) }} />
-                                                    </div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="form-group col-lg-6">
-                                                        <input required type="phone" maxLength={10} name="phone" placeholder="Phone *" value={PhoneNumber || ""} onChange={(e) => { SetPhoneNumber(e.target.value.replace(/\D/g, '')) }} />
-                                                    </div>
-                                                    <div className="form-group col-lg-6">
-                                                        <input required type="text" name="email" placeholder="Email address *" value={Email || ""} onChange={(e) => { SetEmail(e.target.value) }} />
-                                                    </div>
-                                                </div>
-                                                <div className="form-group mb-30">
-                                                    <textarea rows={5} placeholder="Additional information" defaultValue={""} value={AdditionalInfomation || ""} onChange={(e) => { SetAdditionalInfomation(e.target.value) }} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div className="col-lg-5">

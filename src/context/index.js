@@ -14,9 +14,10 @@ const AppProvider = ({ children }) => {
 
   
   // const user_id = localStorage.getItem('user_id') || random;
-  const user_id = localStorage.getItem('user_id');
   const UserName = localStorage.getItem('user');
   const UserEmail = localStorage.getItem('userEmail');
+  const tempid = localStorage.getItem('tempid');
+  const user_id = tempid;
 
   const [isLoading, setIsLoading] = useState(false);
   const [AllCategory, SetAllCategory] = useState([]);
@@ -65,8 +66,6 @@ const AppProvider = ({ children }) => {
           return
       }
       
-      
-      let tempid = localStorage.getItem('tempid');
       if (!tempid) {
         localStorage.setItem('tempid', random);
         tempid = localStorage.getItem('tempid');
