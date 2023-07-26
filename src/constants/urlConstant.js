@@ -4,9 +4,7 @@ const { apiURL } = config;
 
 const urlConstant = {
   User: {
-    UserLogin: `${apiURL}auth/login`,
     GoogleLogin: `${apiURL}auth/login/google`,
-    UserRegister: `${apiURL}auth/signup`,
     UserInfo : `${apiURL}user/info`,
     UserAddresses : `${apiURL}user/addresses`,
     UserAddAddresses : `${apiURL}user/addAddresses`,
@@ -22,11 +20,6 @@ const urlConstant = {
     GetCategoryWiseProducts: `${apiURL}products/categoryProducts`,
     PostSingelProducts: `${apiURL}products/details`,
     Reviews:`${apiURL}reviews/submit`
-  },
-  Wishlist: {
-    PostWishlist: `${apiURL}wishlists-add-product`,
-    GetAllWishlist: `${apiURL}wishlists`,
-    DeleteWishlist: `${apiURL}wishlists-remove-product`
   },
   Cart: {
     PostCart: `${apiURL}cart/add`,

@@ -2,9 +2,13 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import urlConstant from "../constants/urlConstant";
 import CommonService from "../services/commonService";
-import { ToasterSuccess, ToasterWarning, ToasterError } from "../common/toaster";
+import {
+  ToasterSuccess,
+  ToasterWarning,
+  ToasterError,
+} from "../common/toaster";
 import Loding from "../component/Loding";
-import swal from 'sweetalert'
+import swal from "sweetalert";
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
@@ -37,91 +41,83 @@ const AppProvider = ({ children }) => {
   const [searchData, setSearchData] = useState([]);
   const [totalCount, setTotalCount] = useState([]);
 
-  function wishlistPost(P_Id) {
+  function CartPost(
+    id,
+    variant,
+    increment,
+    colors,
+    size,
+    Customizations = "",
+    Sleeves
+  ) {
     try {
-      setIsLoading(true)
-      const Data = { user_id: user_id, product_id: P_Id }
-      const wishlistData = `${urlConstant.Wishlist.PostWishlist}`;
-      axios.post(wishlistData, Data, {
-        headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-      })
-      ToasterSuccess("Success...!!");
-      setIsLoading(false)
-    }
-    catch (error) {
-      ToasterError("Error")
-      setIsLoading(false)
-    }
-  }
-
-  function CartPost(id, variant, increment, colors, size, Customizations='', Sleeves) {
-    try {
-
       if (!size && size != null) {
-        ToasterWarning('Please Select Size')
-        return
-      } else
-      if (!colors && colors != null) {
-          ToasterWarning('Please Select Color')
-          return
+        ToasterWarning("Please Select Size");
+        return;
+      } else if (!colors && colors != null) {
+        ToasterWarning("Please Select Color");
+        return;
       }
       
       if (!tempid) {
-        localStorage.setItem('tempid', random);
-        tempid = localStorage.getItem('tempid');
+        localStorage.setItem("tempid", random);
+        tempid = localStorage.getItem("tempid");
       }
       const localtempid = user_id == null ? tempid : user_id;
-      setIsLoading(true)
-      const Data = { id, variant: variant, quantity: increment || 1, user_id: parseInt(user_id), tempid: parseInt(localtempid), colors, size, customizations:Customizations, sleeves:Sleeves }
+      setIsLoading(true);
+      const Data = {
+        id,
+        variant: variant,
+        quantity: increment || 1,
+        user_id: parseInt(user_id),
+        tempid: parseInt(localtempid),
+        colors,
+        size,
+        customizations: Customizations,
+        sleeves: Sleeves,
+      };
       const CartData = `${urlConstant.Cart.PostCart}`;
-      axios.post(CartData, Data, {
-        headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-      }).then(() => {
-        setTotalCount([...totalCount,Data])
+      axios.post(CartData, Data).then(() => {
+        setTotalCount([...totalCount, Data]);
         ToasterSuccess("Success...!!");
-        setIsLoading(false)
-      })
-    }
-    catch (error) {
-      ToasterError("Error")
+        setIsLoading(false);
+      });
+    } catch (error) {
+      ToasterError("Error");
     }
   }
-
 
   function GetAllSearch(key) {
     try {
-      const Data = { search: key }
+      const Data = { search: key };
       const SearchData = `${urlConstant.SearchData.SearchAllData}`;
-      axios.post(SearchData, Data, {
-        headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-      }).then((res) => {
+      axios.post(SearchData, Data).then((res) => {
         setSearchData(res.data.data);
-      })
-
-    }
-    catch (error) {
-      ToasterError("Error")
+      });
+    } catch (error) {
+      ToasterError("Error");
     }
   }
 
-
   function GetAllCategory() {
     const GetAllCategory1 = `${urlConstant.AllCategory.GetAllCategory}`;
-    common.httpGet(GetAllCategory1).then(function (res) {
-      SetAllCategory(res.data.data.data);
-      SetLogo(res.data.logo);
-      SetHeaderLogo(res.data.headerLogo);
-      SetFooterLogo(res.data.footerLogo);
-      SeFacebook(res.data.facebook);
-      SetTwitter(res.data.twitter);
-      SetInstagram(res.data.instagram);
-      SetYoutube(res.data.youtube);
-      SetLinkedin(res.data.linkedin);
-      SetFooterAddress(res.data.footerAddress);
-      SetFooterPhone(res.data.footerPhone);
-      SetFooterEmail(res.data.footerEmail);
-      SetFooterDesc(res.data.footerDesc);
-    })
+    common
+      .httpGet(GetAllCategory1)
+      .then(function (res) {
+        SetAllCategory(res.data.data.data);
+        SetLogo(res.data.logo);
+        SetHeaderLogo(res.data.headerLogo);
+        SetFooterLogo(res.data.footerLogo);
+        SeFacebook(res.data.facebook);
+        SetTwitter(res.data.twitter);
+        SetInstagram(res.data.instagram);
+        SetYoutube(res.data.youtube);
+        SetLinkedin(res.data.linkedin);
+        SetFooterAddress(res.data.footerAddress);
+        SetFooterPhone(res.data.footerPhone);
+        SetFooterEmail(res.data.footerEmail);
+        SetFooterDesc(res.data.footerDesc);
+      })
       .catch(function (error) {
         // ToasterWarning(error.message)
         console.log(error);
@@ -129,28 +125,53 @@ const AppProvider = ({ children }) => {
   }
 
   function GetHomeCard() {
-    setIsLoading(true)
+    setIsLoading(true);
     const GetHomeCard1 = `${urlConstant.AllHomeCard.GetHomeCard}`;
-    common.httpGet(GetHomeCard1).then(function (res) {
-      SetHomeCard(res.data.data);
-      setIsLoading(false)
-    })
+    common
+      .httpGet(GetHomeCard1)
+      .then(function (res) {
+        SetHomeCard(res.data.data);
+        setIsLoading(false);
+      })
       .catch(function (error) {
         // ToasterError("Error");
-        setIsLoading(false)
+        setIsLoading(false);
       });
   }
-
-
 
   useEffect(() => {
     GetAllCategory();
     GetHomeCard();
-  }, [])
-
+  }, []);
 
   return (
-    <AppContext.Provider value={{totalCount,setTotalCount, user_id, UserEmail, UserName, wishlistPost, Loding, CartPost, AllCategory, Logo, GetAllSearch, searchData, HomeCard, FacebookLink, TwitterLink, InstagramLink, YoutubeLink, LinkedinLink, HeaderLogo, FooterLogo, FooterAddress, FooterPhone, FooterEmail, FooterDesc}}>
+    <AppContext.Provider
+      value={{
+        totalCount,
+        setTotalCount,
+        user_id,
+        UserEmail,
+        UserName,
+        Loding,
+        CartPost,
+        AllCategory,
+        Logo,
+        GetAllSearch,
+        searchData,
+        HomeCard,
+        FacebookLink,
+        TwitterLink,
+        InstagramLink,
+        YoutubeLink,
+        LinkedinLink,
+        HeaderLogo,
+        FooterLogo,
+        FooterAddress,
+        FooterPhone,
+        FooterEmail,
+        FooterDesc,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

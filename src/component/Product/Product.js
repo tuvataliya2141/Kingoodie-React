@@ -26,7 +26,7 @@ import 'photoswipe/style.css';
 function Product(props) {
   const id = useParams();
   let common = new CommonService();
-  const { user_id, wishlistPost, Loding, CartPost, ApplyCoupon } = useAppContext();
+  const { user_id, Loding, CartPost, ApplyCoupon } = useAppContext();
   // const { GetPinCode } = useShippingContext();
 
 
@@ -53,9 +53,7 @@ function Product(props) {
     setIsLoading(true)
     const GetAllProducts = `${urlConstant.Products.PostSingelProducts}`;
     const Data = { slug: id.id, user_id }
-    axios.post(GetAllProducts, Data, {
-      headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-    }).then(function (res) {
+    axios.post(GetAllProducts, Data).then(function (res) {
       console.log(res.data.data.multipleimage);
       setIsLoading(false);
       setList(res.data.data);
@@ -399,12 +397,9 @@ function Product(props) {
                                   </button>
 
                               }
-                              {/* <a  className="action-btn hover-up" onClick={() => { wishlistPost(List.id) }}><i className="fi-rs-heart" /></a> */}
 
-                              {
-                                user_id == null ? <Link to="/login" className="action-btn hover-up"><i className="fi-rs-heart" /></Link> :
-                                  <a className="action-btn hover-up" onClick={() => { wishlistPost(List.id) }}><i className="fi-rs-heart" /></a>
-                              }
+                                
+                             
                             </div>
                           </div>
                           <hr style={{ margin: "10px", color: "rgb(69 96 147)" }} />

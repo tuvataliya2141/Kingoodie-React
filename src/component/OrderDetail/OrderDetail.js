@@ -1,23 +1,14 @@
 import React, { useState,useEffect } from 'react'
-import serviceImage from '../../service.svg'
-import Footer from '../Footer'
-import Header from '../Header'
-
 import CommonService from "../../services/commonService";
 import urlConstant from "../../constants/urlConstant";
 import { ToasterSuccess, ToasterWarning, ToasterError } from "../../common/toaster";
 import { ToastContainer } from "react-toastify";
-import { useAppContext } from '../../context/index';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
 
 function OrderDetail() {
     let common = new CommonService();
-    const { Loding } = useAppContext();
     const queryParameters = new URLSearchParams(window.location.search);
     const id = queryParameters.get("id");
-
-    const [List, setList] = useState([]);
     const [subject, Setsubject] = useState();
     const [attachments, Setattachments] = useState('');
     const [file, SetFile] = useState([]);
@@ -54,7 +45,6 @@ function OrderDetail() {
             const ContactData = `${urlConstant.Contact.PostContact}`;
             await axios.post(ContactData, data, {
                 headers: { 
-                    "Authorization": `Bearer ${localStorage.getItem('access_token')}`,
                     "Content-Type": "multipart/form-data"
                 }
               }).then(() => {
@@ -78,9 +68,7 @@ function OrderDetail() {
             setIsLoading(true)
             const Data = { id:`${id}` }
             const GetOrderDetail = `${urlConstant.Dashboard.OrderDetail}/${id}`;
-            common.httpGet(GetOrderDetail, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            common.httpGet(GetOrderDetail, Data).then((res) => {
                 SetOrderDetails(res.data.data);
                 SetOrder_id(res.data.data.code);
                 SetOrderMainId(res.data.data.id);
@@ -108,9 +96,7 @@ function OrderDetail() {
         try {
           const Data = { id:`${id}` }
           const GetOrderDetail = `${urlConstant.Dashboard.OrderSummary}/${id}`;
-          common.httpGet(GetOrderDetail, Data, {
-            headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-          }).then((res) => {
+          common.httpGet(GetOrderDetail, Data).then((res) => {
             SetProductDetails(res.data.data);
           })
     

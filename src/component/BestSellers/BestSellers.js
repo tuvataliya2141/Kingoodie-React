@@ -12,7 +12,7 @@ function BestSellers() {
   let common = new CommonService();
   const [isLoading, setIsLoading] = useState(false);
   const [List, SetList] = useState([]);
-  const { user_id, wishlistPost, Loding, CartPost } = useAppContext();
+  const { user_id,  Loding, CartPost } = useAppContext();
 
   const settings = {
     className: "center",
@@ -67,14 +67,7 @@ function BestSellers() {
                                   <img className="hover-img" src={image} alt="/" />
                                 </Link>
                               </div>
-                              <div className="product-action-1">
-                                {
-                                  user_id == null ? <Link to='/login'><a className="action-btn"><i className="fi-rs-heart" /></a></Link> : <a className="action-btn" onClick={() => { wishlistPost(item.id) }}><i className="fi-rs-heart" /></a>
-                                }
-
-                                {/* <a  className="action-btn" onClick={() => { wishlistPost(item.id) }}><i className="fi-rs-heart" /></a> */}
-                                {/* <a aria-label="Compare" className="action-btn" href="#"><i className="fi-rs-shuffle" /></a> */}
-                              </div>
+                              
                               <div className="product-badges product-badges-position product-badges-mrg flex-column">
                                 {
                                   item.on_sale == 0 ? null :
