@@ -16,7 +16,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 function Cart() {
   let common = new CommonService();
-  const { user_id, Loding, ApplyCoupon, setTotalCount } = useAppContext();
+  const { Loding, ApplyCoupon, setTotalCount } = useAppContext();
 
   const [List, setList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +83,7 @@ function Cart() {
       if (willDelete1) {
         setIsLoading(true);
         const tempid = localStorage.getItem("tempid");
-        const Data = user_id ? `user_id=${user_id}` : `tempuserid=${tempid}`;
+        const Data =  `tempuserid=${tempid}`;
         const deleteAllCart = `${urlConstant.Cart.AllCartDelete}`;
         axios.post(deleteAllCart, Data).then((res) => {
           setIsLoading(false);

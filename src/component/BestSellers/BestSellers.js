@@ -12,7 +12,7 @@ function BestSellers() {
   let common = new CommonService();
   const [isLoading, setIsLoading] = useState(false);
   const [List, SetList] = useState([]);
-  const { user_id,  Loding, CartPost } = useAppContext();
+  const {   Loding, CartPost } = useAppContext();
 
   const settings = {
     className: "center",

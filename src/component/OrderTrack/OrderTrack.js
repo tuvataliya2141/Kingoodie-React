@@ -26,13 +26,10 @@ function OrderTrack() {
         <div className="page-content pt-100 pb-150">
           <div className="container">
             <div className="row">
-              <div className="col-lg-8 m-auto">
+              <div className="col-lg-8">
                 <div className="row">
-                  <div className="card p-0">
-                    <div className="card-header">
-                      <h3 className="mb-0">Order Tracking</h3>
-                    </div>
                     <div className="card-body contact-from-area">
+                      <h3 className="mb-2">Order Tracking</h3>
                       <p>
                         To track your order please enter your OrderID in the box
                         below and press "Track" button. This was given to you on
@@ -69,7 +66,6 @@ function OrderTrack() {
                         </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
