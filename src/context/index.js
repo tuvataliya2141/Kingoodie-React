@@ -16,7 +16,6 @@ const AppProvider = ({ children }) => {
 
   const random = Math.floor(Math.random() * 10000);
 
-  // const user_id = localStorage.getItem('user_id') || random;
   const user_id = localStorage.getItem("user_id");
   const UserName = localStorage.getItem("user");
   const UserEmail = localStorage.getItem("userEmail");

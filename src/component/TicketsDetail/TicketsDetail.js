@@ -1,24 +1,17 @@
 import React, { useState,useEffect } from 'react'
-import serviceImage from '../../service.svg'
-import Footer from '../Footer'
-import Header from '../Header'
-
 import CommonService from "../../services/commonService";
 import urlConstant from "../../constants/urlConstant";
 import { ToasterSuccess, ToasterWarning, ToasterError } from "../../common/toaster";
 import { ToastContainer } from "react-toastify";
 import { useAppContext } from '../../context/index';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
 
 function TicketsDetail() {
     let common = new CommonService();
-    const { user_id, Loding, UserName } = useAppContext();
+    const { user_id } = useAppContext();
     const queryParameters = new URLSearchParams(window.location.search);
     const id = queryParameters.get("id");
 
-    const [List, setList] = useState([]);
-    const [product_id, Setproduct_id] = useState("");
     const [TicketId, SetTicketId] = useState("");
     const [TicketCode, SetTicketCode] = useState("");
     const [TicketDetails, SetTicketDetails] = useState("");
@@ -101,7 +94,7 @@ function TicketsDetail() {
                                                 <div class="message-right">
                                                     <div class="me">
                                                         <label>You</label>
-                                                        <span class="symbol-label  bg-light-danger text-danger fs-6 fw-bolder ">{Array.from(UserName)[0]}</span>
+                                                        {/* <span class="symbol-label  bg-light-danger text-danger fs-6 fw-bolder ">{Array.from(UserName)[0]}</span> */}
                                                     </div>
                                                     <h5 className="userChat" style={{ textAlign: 'right' }}>{TicketDetails.details}</h5>
                                                 </div>
@@ -126,7 +119,7 @@ function TicketsDetail() {
                                                                     <div class="message-right">
                                                                         <div class="me">
                                                                             <label>You</label>
-                                                                            <span class="symbol-label  bg-light-danger text-danger fs-6 fw-bolder ">{Array.from(UserName)[0]}</span>
+                                                                            {/* <span class="symbol-label  bg-light-danger text-danger fs-6 fw-bolder ">{Array.from(UserName)[0]}</span> */}
                                                                         </div>
                                                                         <h5 className="userChat" style={{ textAlign: 'right' }}>{item.details.replace(/(<([^>]+)>)/ig, '')}</h5>
                                                                     </div>

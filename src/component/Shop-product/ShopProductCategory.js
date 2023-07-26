@@ -11,7 +11,7 @@ import RangeSlider from "./RangeSlider";
 function ShopProductCategory() {
   const name = useParams();
 
-  const { user_id,  Loding } = useAppContext();
+  const {   Loding } = useAppContext();
 
   const [List, setList] = useState([]);
   const [toggleMobile, settoggleMobile] = useState(false);

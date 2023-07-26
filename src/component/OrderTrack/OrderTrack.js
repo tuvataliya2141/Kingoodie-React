@@ -52,11 +52,16 @@ function OrderTrack() {
                                 onChange={(e) => {
                                   setTrackOrderId(e.target.value);
                                 }}
+                                required
                               />
                             </div>
 
                             <Link to={`/OrderDetail?id=${TrackOrderId}`}>
-                              <button className="submit submit-auto-width">
+                              <button
+                                type="submit"
+                                className="submit submit-auto-width"
+                                disabled={!TrackOrderId}
+                              >
                                 Track
                               </button>
                             </Link>

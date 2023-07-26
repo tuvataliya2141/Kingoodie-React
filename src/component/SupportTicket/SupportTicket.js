@@ -34,10 +34,10 @@ function SupportTicket() {
                     </div>
                     <div className="card-body contact-from-area">
                       <p>
-                        To track your support Ticket please enter your TicketID in the box
-                        below and press "Track" button. This was given to you on
-                        your receipt and in the confirmation email you should
-                        have received.
+                        To track your support Ticket please enter your TicketID
+                        in the box below and press "Track" button. This was
+                        given to you on your receipt and in the confirmation
+                        email you should have received.
                       </p>
                       <div className="row">
                         <div className="col-lg-8">
@@ -56,7 +56,10 @@ function SupportTicket() {
                             </div>
 
                             <Link to={`/TicketsDetail?id=${supportTicket}`}>
-                              <button className="submit submit-auto-width">
+                              <button
+                                className="submit submit-auto-width"
+                                disabled={!supportTicket}
+                              >
                                 Track
                               </button>
                             </Link>

@@ -1,23 +1,14 @@
 import React, { useState,useEffect } from 'react'
-import serviceImage from '../../service.svg'
-import Footer from '../Footer'
-import Header from '../Header'
-
 import CommonService from "../../services/commonService";
 import urlConstant from "../../constants/urlConstant";
 import { ToasterSuccess, ToasterWarning, ToasterError } from "../../common/toaster";
 import { ToastContainer } from "react-toastify";
-import { useAppContext } from '../../context/index';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
 
 function OrderDetail() {
     let common = new CommonService();
-    const { Loding } = useAppContext();
     const queryParameters = new URLSearchParams(window.location.search);
     const id = queryParameters.get("id");
-
-    const [List, setList] = useState([]);
     const [subject, Setsubject] = useState();
     const [attachments, Setattachments] = useState('');
     const [file, SetFile] = useState([]);

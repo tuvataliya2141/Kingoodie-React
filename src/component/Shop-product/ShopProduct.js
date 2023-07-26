@@ -9,7 +9,7 @@ import { useAppContext } from "../../context/index";
 import RangeSlider from "./RangeSlider";
 
 function ShopProduct() {
-  const { user_id,  Loding,  } = useAppContext();
+  const {  Loding  } = useAppContext();
   const [List, setList] = useState([]);
   const [toggleMobile, settoggleMobile] = useState(false);
   const [filterData, setFilterData] = useState({
