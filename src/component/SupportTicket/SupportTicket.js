@@ -26,44 +26,40 @@ function SupportTicket() {
         <div className="page-content pt-100 pb-150">
           <div className="container">
             <div className="row">
-              <div className="col-lg-8 m-auto">
+              <div className="col-lg-8 ">
                 <div className="row">
-                  <div className="card p-0">
-                    <div className="card-header">
-                      <h3 className="mb-0">Support Ticket</h3>
-                    </div>
-                    <div className="card-body contact-from-area">
-                      <p>
-                        To track your support Ticket please enter your TicketID
-                        in the box below and press "Track" button. This was
-                        given to you on your receipt and in the confirmation
-                        email you should have received.
-                      </p>
-                      <div className="row">
-                        <div className="col-lg-8">
-                          <div className="contact-form-style mt-30 mb-50">
-                            <div className="input-style mb-20">
-                              <label>Ticket ID</label>
-                              <input
-                                name="order-id"
-                                placeholder="Found in your Ticket ID"
-                                type="text"
-                                value={supportTicket}
-                                onChange={(e) => {
-                                  setSupportTicketId(e.target.value);
-                                }}
-                              />
-                            </div>
-
-                            <Link to={`/TicketsDetail?id=${supportTicket}`}>
-                              <button
-                                className="submit submit-auto-width"
-                                disabled={!supportTicket}
-                              >
-                                Track
-                              </button>
-                            </Link>
+                  <div className="card-body contact-from-area">
+                    <h3 className="mb-2">Support Ticket</h3>
+                    <p>
+                      To track your support Ticket please enter your TicketID in
+                      the box below and press "Track" button. This was given to
+                      you on your receipt and in the confirmation email you
+                      should have received.
+                    </p>
+                    <div className="row">
+                      <div className="col-lg-8">
+                        <div className="contact-form-style mt-30 mb-50">
+                          <div className="input-style mb-20">
+                            <label>Ticket ID</label>
+                            <input
+                              name="order-id"
+                              placeholder="Found in your Ticket ID"
+                              type="text"
+                              value={supportTicket}
+                              onChange={(e) => {
+                                setSupportTicketId(e.target.value);
+                              }}
+                            />
                           </div>
+
+                          <Link to={`/TicketsDetail?id=${supportTicket}`}>
+                            <button
+                              className="submit submit-auto-width"
+                              disabled={!supportTicket}
+                            >
+                              Track
+                            </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

@@ -116,9 +116,7 @@ function Checkout() {
             const Data = { CouponCode, name: Name, address: Address, state_id: state, country_id: Country, city_id: city, postal_code: PostCode, phone: PhoneNumber, email: Email, AdditionalInfomation, user_id, payment_method: login_type, total_amount: Math.round(Sub_Total_price), address_same_type: 1, payment_status: PaymentStatus, payment_type: PaymentTypes};
 
             const ContactData = `${urlConstant.Checkout.PostCheckout}`;
-            axios.post(ContactData, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            axios.post(ContactData, Data).then((res) => {
                 if (res.data.status == true) {
                     ToasterSuccess("Order Successfully placed...!!");
                     window.location.href = '/Dashboard';
@@ -143,7 +141,7 @@ function Checkout() {
     
     function GetAllCart() {
         const tempid = localStorage.getItem('tempid');
-        const cartid = user_id ? `?userId=${user_id}` : `?tempuserid=${tempid}`;
+        const cartid = `?tempuserid=${tempid}`;
         const GetAllCart = `${urlConstant.Cart.GetCart}${cartid}`;
         common.httpGet(GetAllCart).then(function (res) {
             if(res?.data?.data[0]?.cart_items){
@@ -261,9 +259,7 @@ function Checkout() {
             setIsLoading(true)
             const Data = { coupon_code: CouponCode, user_id: parseInt(user_id) }
             const CouponData = `${urlConstant.ApplyCoupon.PostApplyCoupon}`;
-            axios.post(CouponData, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            axios.post(CouponData, Data).then((res) => {
                 // ToasterSuccess("Success...!!");
                 ToasterSuccess(res.data.message);
                 SetCouponResult(res.data.discount);
@@ -281,9 +277,7 @@ function Checkout() {
             setIsLoading(true)
             const Data = { user_id: parseInt(user_id) }
             const CouponData = `${urlConstant.ApplyCoupon.RemoveCoupon}`;
-            axios.post(CouponData, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            axios.post(CouponData, Data).then((res) => {
                 ToasterSuccess(res.data.message);
                 SetCouponResult(0);
                 localStorage.removeItem('discount');
@@ -390,9 +384,7 @@ function Checkout() {
             console.log(token.id);
             const Data = { token_id: token.id, amount: priceForStripe };
             const stripeChargeUrl = `${urlConstant.Checkout.stripeCharge}`;
-            axios.post(stripeChargeUrl, Data, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-            }).then((res) => {
+            axios.post(stripeChargeUrl, Data).then((res) => {
                 console.log(res);
                 if(res.data.success == false) {
                     ToasterError("Please try with different payment gateway");
@@ -414,9 +406,7 @@ function Checkout() {
         setIsLoading(true)
         const Data = { CouponCode, name: Name, address: Address, state_id: state, country_id: Country, city_id: city, postal_code: PostCode, phone: PhoneNumber, email: Email, AdditionalInfomation, user_id, payment_method: PaymentTypes, total_amount: Math.round(main_Sub_Total_price), address_same_type: 1, payment_status: PaymentStatus, payment_type: PaymentTypes, payment_id};
         const PlaceOrderUrl = `${urlConstant.Checkout.PlaceOrder}`;
-        axios.post(PlaceOrderUrl, Data, {
-            headers: { "Authorization": `Bearer ${localStorage.getItem('access_token')}` }
-        }).then(() => {
+        axios.post(PlaceOrderUrl, Data).then(() => {
             ToasterSuccess("Order Placed Successfully...!!");
             setIsLoading(false);
             window.location.href = '/Dashboard';

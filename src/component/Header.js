@@ -11,7 +11,6 @@ function Header({ Crat }) {
     Logo,
     GetAllSearch,
     searchData,
-    user_id,
     totalCount,
     setTotalCount,
   } = useAppContext();
