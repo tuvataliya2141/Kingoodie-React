@@ -72,10 +72,10 @@ function Checkout() {
             }
         }
         
-        if(!city){
-            ToasterWarning('Please select another address')
-            return
-        }
+        // if(!city){
+        //     ToasterWarning('Please select another address')
+        //     return
+        // }
         if (!Name || !Address || !state || !city || !PostCode || !PhoneNumber || !Email || !payment_method) {
             
             ToasterWarning('Please select or add the address')
