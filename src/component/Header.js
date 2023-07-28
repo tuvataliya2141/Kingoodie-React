@@ -446,7 +446,10 @@ function Header({ Crat }) {
             </div>
             <div className="mobile-menu-wrap mobile-header-border">
               <nav>
-                <ul className="mobile-menu font-heading">
+                <ul className="mobile-menu font-heading" 
+                onClick={() => {
+                  settoggle("");
+                }}>
                   <li className="nav-item">
                     <Link className="nav-link" to="/">
                       Home
