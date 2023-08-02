@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../Footer'
 import Header from '../Header'
 
@@ -42,6 +42,12 @@ function Contact() {
         }
 
     }
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+      }, []);
     return (
         <div>
             {isLoading ? <Loding /> : Contact}

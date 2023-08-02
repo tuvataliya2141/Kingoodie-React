@@ -1,8 +1,15 @@
 import React from 'react'
 import Footer from '../Footer'
 import Header from '../Header'
+import { useEffect } from 'react';
 
 function ReturnExchangePolicy() {
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+      }, []);
   return (
     <div>
         {/* <Header/> */}

@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from '../Footer';
 import Header from '../Header';
 
 function Terms_Service() {
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+      }, []);
   return (
     <div>
         {/* <Header/> */}
